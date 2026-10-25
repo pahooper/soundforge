@@ -8,7 +8,7 @@
  import {slotEntries} from './mix';
  import type {Mix} from './mix';
  import type {Track} from './types';
- import {frameAt,nextIndex,waveOffset} from './visualization';
+ import {barsAt,frameAt,nextIndex,stepBars,waveOffset} from './visualization';
   interface Props {
     track?: Track|null;
     playlist?: Track[];
@@ -42,25 +42,71 @@
   engine=new MixEngine(()=>{const n=document.createElement('audio');mediaRoot.append(n);return n},s=>{mixState=s});
   engine.update(mix);
   let id:number;
-  function draw(){
+  const barCurrent=new Array<number>(36).fill(0.025);
+  const barPeaks=new Array<number>(36).fill(0.025);
+  const barHolds=new Array<number>(36).fill(0);
+  const waveSmoothed=new Array<number>(36).fill(0);
+  let lastWall=performance.now();
+  let lastMediaTime=-1;
+  let lastTrackUrl='';
+  const reducedMotionQuery=typeof window.matchMedia==='function'?window.matchMedia('(prefers-reduced-motion: reduce)'):null;
+  function draw(nowWall=performance.now()){
    const ctx=canvas.getContext('2d');if(ctx){
-    const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
-    const frame=frameAt(shown?.visualization,isMix?mixState.time:(audio?.currentTime??0));
-    ctx.strokeStyle=theme==='light'?'#00bdd5':'#10cfe4';ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=1.1;
-    const now=audio?.currentTime??0;
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    const w=640,h=220;
+    const pw=Math.round(w*dpr),ph=Math.round(h*dpr);
+    if(canvas.width!==pw||canvas.height!==ph){canvas.width=pw;canvas.height=ph}
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    const mediaTime=isMix?mixState.time:(audio?.currentTime??0);
+    const rawFrame=frameAt(shown?.visualization,mediaTime);
+    const dt=Math.max(0,Math.min(0.1,(nowWall-lastWall)/1000));
+    lastWall=nowWall;
+    const trackUrl=shown?.url??'';
+    const jumped=trackUrl!==lastTrackUrl||lastMediaTime<0||Math.abs(mediaTime-lastMediaTime)>0.18;
+    const reduced=Boolean(reducedMotionQuery?.matches);
+    const snap=jumped||reduced||!shownPlaying;
+    lastTrackUrl=trackUrl;
+    lastMediaTime=mediaTime;
+    ctx.strokeStyle=theme==='light'?'#00bdd5':'#10cfe4';ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=1.15;
     if(mode==='bars'){
+     const targets=barsAt(rawFrame,36);
+     stepBars(barCurrent,barPeaks,barHolds,targets,dt,snap);
+     const base=169,bw=w/36-6;
      for(let i=0;i<36;i++){
-      const f=i/35*(frame.length-1),lo=Math.max(0,Math.floor(f));
-      const v=frame.length?(frame[lo]+((frame[Math.min(lo+1,frame.length-1)]??frame[lo])-frame[lo])*(f-lo)):0.025;
-      const height=5+v*140,x=i*w/36+3,bw=w/36-6,base=169;
-      const g=ctx.createLinearGradient(0,base-height,0,base);g.addColorStop(0,'#16dded');g.addColorStop(1,'#009daf');ctx.fillStyle=g;
-      ctx.beginPath();ctx.roundRect(x,base-height,bw,height,5);ctx.fill();
+      const v=barCurrent[i];
+      const height=5+v*140,x=i*w/36+3;
+      const g=ctx.createLinearGradient(0,base-height,0,base);
+      g.addColorStop(0,theme==='light'?'#12d6e8':'#1ef0ff');
+      g.addColorStop(0.55,theme==='light'?'#00bdd5':'#10cfe4');
+      g.addColorStop(1,theme==='light'?'#008fa3':'#008da0');
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.roundRect(x,base-height,bw,height,4);ctx.fill();
+      if(!reduced&&barPeaks[i]>v+0.025&&barPeaks[i]>0.06){
+       const peakY=Math.max(8,base-(5+barPeaks[i]*140)-4);
+       ctx.fillStyle=theme==='light'?'#00a8be':'#7cf7ff';
+       ctx.globalAlpha=0.78;
+       ctx.beginPath();ctx.roundRect(x,peakY,bw,2.5,1.25);ctx.fill();
+       ctx.globalAlpha=1;
+      }
+      ctx.fillStyle=g;
       ctx.globalAlpha=.14;ctx.beginPath();ctx.roundRect(x,base+5,bw,height*.26,4);ctx.fill();ctx.globalAlpha=1;
      }
     }else{
+     const targets=rawFrame.length?barsAt(rawFrame,36):[];
+     if(!targets.length){
+      waveSmoothed.fill(0);
+     }else{
+      const alpha=snap?1:1-Math.exp(-dt/0.045);
+      for(let i=0;i<36;i++){
+       const prev=waveSmoothed[i]??targets[i];
+       waveSmoothed[i]=prev+(targets[i]-prev)*alpha;
+      }
+     }
+     const activeFrame=targets.length?waveSmoothed:[];
      for(let layer=0;layer<28;layer++){
-      ctx.globalAlpha=.18+layer/100;ctx.beginPath();
-      for(let x=0;x<=w;x+=2){const y=h/2+waveOffset(frame,x/w,layer);x?ctx.lineTo(x,y):ctx.moveTo(x,y)}
+      ctx.globalAlpha=.16+layer/95;ctx.beginPath();
+      for(let x=0;x<=w;x+=2){const y=h/2+waveOffset(activeFrame,x/w,layer);x?ctx.lineTo(x,y):ctx.moveTo(x,y)}
       ctx.stroke();
      }ctx.globalAlpha=1;
     }

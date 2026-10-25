@@ -35,13 +35,13 @@ Analyzed: Maple Leaf Rag — Second passage
 Wrote tracks-enriched.json; 0 unsupported or failed tracks retained.
 ```
 
-Reload the browser and choose a track. Both tracks are eight seconds long. Each enriched track has duration and visualization data; each frame contains eight values from 0 to 255.
+Reload the browser and choose a track. Both tracks are eight seconds long. Each enriched track has duration and visualization data; each 50ms frame contains 36 values from 0 to 255.
 
 ## Files
 
 - `index.html`: complete HTML, styling, imports, connection, theme control, and catalog loading.
 - `lib/`: browser modules copied by setup from the installed package.
-- `audio/opening.wav`, `audio/second-passage.wav`: original synthetic PCM WAV samples.
+- `audio/opening.wav`, `audio/second-passage.wav`: public-domain piano excerpts from Scott Joplin's Maple Leaf Rag (see `audio/NOTICE.md`).
 - `tracks.json`: preprocessing input.
 - `tracks-enriched.json`: working preprocessed output.
 - `serve.mjs`: Node-only local server with byte-range support, bound to 127.0.0.1. Use a production server for deployment.

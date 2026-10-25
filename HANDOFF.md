@@ -4,7 +4,8 @@
 
 - Public source repository: https://github.com/pahooper/soundforge
 - Public npm package: @pahooper/soundforge. Version 0.3.4 was published by the successful GitHub Actions trusted publishing workflow.
-- Main now contains package version 0.3.5 with real-music example changes. It has NOT been released to npm. Ordinary pushes do not publish; publishing a stable GitHub release triggers .github/workflows/publish.yml.
+- Main contains package version 0.3.5 with real-music example excerpts, 36-band 20 fps multi-resolution FFT preprocessing (`tools/analyze.ts`), DC/rumble removal, and upgraded `Bars` and `Wave` browser visualizations (`src/visualization.ts`, `src/AudioPlayer.svelte`) while preserving compatibility with legacy 8-band `version: 1` catalogs.
+- Ordinary pushes do not publish; publishing a stable GitHub release (`v0.3.5`) triggers `.github/workflows/publish.yml`.
 - npm trusted publishing is configured for pahooper/soundforge, workflow filename publish.yml. No npm token is stored in GitHub.
 - GitHub includes the original Svelte components, CLI, declarations, tests, build tools, complete HTML example, guides, and Issues-only contribution policy. Pull requests are not accepted.
 - The existing Audio Player Demo Site was updated with documentation and complete example pages and remains owner-only. Current deployed URL: https://phil-audio-player-demo.pnod.chatgpt.site. Its earlier address used the fabledcreek32 route. Source identity is separate from this public GitHub repository.

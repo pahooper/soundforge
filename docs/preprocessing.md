@@ -40,11 +40,11 @@ The output is a JSON array. A representative first track, with the frame array a
   duration: 8,
   visualization: {
     version: 1,
-    interval: 0.1,
-    bands: 8,
+    interval: 0.05,
+    bands: 36,
     frames: [
-      [255, 52, 51, 20, 7, 6, 3, 1],
-      // 79 more frames follow in the supplied tracks-enriched.json.
+      [0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      // 159 more 36-band frames follow in the supplied tracks-enriched.json.
     ]
   }
 }
@@ -60,12 +60,12 @@ This illustrative object is not a replacement catalog. The packaged `examples/tr
 | `url` | Required string; local file path or HTTP(S) URL for analysis. Must also resolve to playable audio when used by the browser. |
 | `duration` | Written by analysis, in seconds. |
 | `visualization.version` | Currently 1. |
-| `visualization.interval` | Seconds between frames; CLI emits 0.1. |
-| `visualization.bands` | Number of values per frame; CLI emits 8. |
+| `visualization.interval` | Seconds between frames; CLI emits 0.05 (20 fps). |
+| `visualization.bands` | Number of values per frame; CLI emits 36 (the player also supports legacy 8-band `version: 1` catalogs). |
 | `visualization.frames` | Arrays of band values, integer 0–255. |
 | Other fields | Preserved, for example `category`, `id`, and application metadata. |
 
-The current analyzer measures the first decoded audio channel using eight frequency bands and normalizes the values across that track. It is a compact visualization representation, not loudness measurement or lossless audio data.
+The analyzer removes DC offset and sub-bass rumble, combines power spectra across decoded channels using multi-resolution Hann-windowed FFTs across 36 logarithmically spaced frequency bands (65 Hz to 9.2 kHz), and normalizes values relative to the track's 99th-percentile spectral peak. It is a compact visualization representation, not loudness measurement or lossless audio data.
 
 ## Local paths and browser URLs
 

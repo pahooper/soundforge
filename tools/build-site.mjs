@@ -14,6 +14,8 @@ for(const [input,name] of pages){
 await cp('examples',target+'/examples',{recursive:true});
 await cp('dist',target+'/examples/lib',{recursive:true});
 for(const name of ['audio-player.js','audio-browser.js','connect.js'])await cp('dist/'+name,target+'/'+name);
+const siteCatalog=(await readFile('public/catalog.json','utf8')).replaceAll('"./public/','"./');
+await writeFile(target+'/catalog.json',siteCatalog);
 let demo=await readFile(target+'/index.html','utf8');
 if(!demo.includes('SoundForge documentation'))demo=demo.replace('<header>','<nav style="max-width:940px;margin:0 auto 20px;display:flex;gap:24px;flex-wrap:wrap"><a href="./docs/">SoundForge documentation</a><a href="./examples/">Complete HTML example</a><a href="https://github.com/pahooper/soundforge/issues">Report an issue</a></nav><header>');
 await writeFile(target+'/index.html',demo);

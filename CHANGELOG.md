@@ -2,9 +2,9 @@
 
 ## 0.3.5 — 2026-10-25
 
-- Replaced fixed-pitch synthetic demo tones with two real piano excerpts from a verified public-domain recording.
-- Added source/recording credits and a test that catches nearly fixed spectral profiles in example music.
-- Browser renderer remains unchanged; this corrects the misleading demonstration audio.
+- Upgraded `soundforge-analyze` to 36 logarithmically spaced frequency bands at 20 frames per second (`interval: 0.05`) using multi-resolution Hann-windowed FFTs across all decoded channels, DC/rumble blocking, and dynamic-range floor normalization.
+- Upgraded `compact-audio-player` `Bars` and `Wave` visualizations: direct 36-band column mapping with frame-rate-independent attack/release ballistics and peak-hold caps, spatially localized multi-strand wave packets that eliminate uniform vertical breathing, HiDPI canvas scaling, and `prefers-reduced-motion` support (while preserving compatibility with 8-band `version: 1` catalogs).
+- Replaced fixed-pitch synthetic demo tones with two DC-cleaned public-domain piano excerpts from Scott Joplin's *Maple Leaf Rag* and added diagnostic and real-music spectral/wave verification tests.
 
 ## 0.3.4 — 2026-10-25
 

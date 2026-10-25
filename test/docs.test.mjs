@@ -27,7 +27,7 @@ try {
   assert.match(output,/0 unsupported or failed/);
   assert.equal(await readFile(join(demo,'tracks-enriched.json'),'utf8'),before);
   const tracks=JSON.parse(before);assert.equal(tracks.length,2);
-  for(const track of tracks){assert.equal(track.duration,8);assert.equal(track.visualization.frames.length,80);assert.ok(track.visualization.frames.every(f=>f.length===8&&f.every(v=>Number.isInteger(v)&&v>=0&&v<=255)));assert.ok(track.visualization.frames.some(f=>f.some(v=>v>0)));}
+  for(const track of tracks){assert.equal(track.duration,8);assert.equal(track.visualization.interval,0.05);assert.equal(track.visualization.bands,36);assert.equal(track.visualization.frames.length,160);assert.ok(track.visualization.frames.every(f=>f.length===36&&f.every(v=>Number.isInteger(v)&&v>=0&&v<=255)));assert.ok(track.visualization.frames.some(f=>f.some(v=>v>0)));}
   const p=JSON.parse(await readFile(join(installed,'package.json'),'utf8'));
   assert.equal(run(process.execPath,[join(installed,'dist/analyze.js'),'--version']).trim(),p.version);
   server=spawn(process.execPath,[join(demo,'serve.mjs'),demo],{cwd:temp,env:{...process.env,PORT:'0'},stdio:['ignore','pipe','pipe']});

@@ -129,7 +129,7 @@ Input `tracks.json`:
 ]
 ```
 
-Each output track retains these fields and gains `duration` in seconds and a `visualization` object containing a version, frame interval, band count, and frame values. Both sample durations are 8 seconds; each has 80 frames with 8 values per frame. See the [preprocessing guide](https://github.com/pahooper/soundforge/blob/main/docs/preprocessing.md) for a representative output object, HTTP inputs, error handling, and path mapping.
+Each output track retains these fields and gains `duration` in seconds and a `visualization` object containing a version, frame interval, band count, and frame values. Both sample durations are 8 seconds; each has 160 frames with 36 values per frame (legacy 8-band `version: 1` catalogs also remain supported). See the [preprocessing guide](https://github.com/pahooper/soundforge/blob/main/docs/preprocessing.md) for a representative output object, HTTP inputs, error handling, and path mapping.
 
 Reload **http://127.0.0.1:8080**, leave **With preprocessed visualization** selected, and play a track. The example fetches `tracks-enriched.json` and passes its tracks to the catalog; the connection forwards the selected track and its visualization to the player.
 
