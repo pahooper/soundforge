@@ -1,12 +1,12 @@
 [
   {
-    "title": "Pulse",
-    "url": "./audio/pulse.wav",
-    "category": "Synthetic"
+    "title": "Maple Leaf Rag — Opening",
+    "url": "./audio/opening.wav",
+    "category": "Ragtime"
   },
   {
-    "title": "Chime",
-    "url": "./audio/chime.wav",
-    "category": "Synthetic"
+    "title": "Maple Leaf Rag — Second passage",
+    "url": "./audio/second-passage.wav",
+    "category": "Ragtime"
   }
 ]

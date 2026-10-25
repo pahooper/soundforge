@@ -13,7 +13,7 @@ function run(command,args,cwd=temp){
 try {
   const [packed]=JSON.parse(run('npm',['pack','--ignore-scripts','--json','--pack-destination',temp],root));
   const paths=packed.files.map(f=>f.path);
-  for(const required of ['examples/index.html','examples/setup.mjs','examples/serve.mjs','examples/audio/pulse.wav','examples/tracks.json','examples/tracks-enriched.json','docs/preprocessing.md','docs/reference.md','docs/troubleshooting.md'])assert.ok(paths.includes(required),required);
+  for(const required of ['examples/index.html','examples/setup.mjs','examples/serve.mjs','examples/audio/opening.wav','examples/tracks.json','examples/tracks-enriched.json','docs/preprocessing.md','docs/reference.md','docs/troubleshooting.md'])assert.ok(paths.includes(required),required);
   assert.ok(!paths.some(p=>p.startsWith('public/')||p.startsWith('test/')||p.includes('.openai')||p.includes('superpowers')));
   await writeFile(join(temp,'package.json'),JSON.stringify({name:'soundforge-docs-consumer',private:true,type:'module'}));
   run('npm',['install','--ignore-scripts','--no-audit','--no-fund',join(temp,packed.filename)]);
@@ -39,11 +39,11 @@ try {
   });
   const page=await fetch(url);assert.equal(page.status,200);
   const html=await page.text();assert.match(html,/compact-audio-browser/);assert.match(html,/compact-audio-player/);
-  for(const asset of ['lib/audio-player.js','lib/audio-browser.js','lib/connect.js','tracks.json','tracks-enriched.json','audio/pulse.wav','audio/chime.wav']){
+  for(const asset of ['lib/audio-player.js','lib/audio-browser.js','lib/connect.js','tracks.json','tracks-enriched.json','audio/opening.wav','audio/second-passage.wav']){
     const response=await fetch(url+'/'+asset);assert.equal(response.status,200,asset);
     if(asset.endsWith('.js'))assert.match(response.headers.get('content-type'),/javascript/);
   }
-  const range=await fetch(url+'/audio/pulse.wav',{headers:{Range:'bytes=0-43'}});
+  const range=await fetch(url+'/audio/opening.wav',{headers:{Range:'bytes=0-43'}});
   assert.equal(range.status,206);assert.equal((await range.arrayBuffer()).byteLength,44);assert.match(range.headers.get('content-range'),/^bytes 0-43\//);
   assert.equal((await fetch(url+'/does-not-exist')).status,404);
   for(const file of ['README.md','docs/preprocessing.md','docs/recipes.md','docs/reference.md','docs/troubleshooting.md']){

@@ -1,6 +1,6 @@
 # SoundForge HTML example
 
-This folder contains a complete HTML page with both SoundForge components connected, two eight-second synthetic audio files, and original and enriched catalogs. Sample audio is original and covered by the package MIT license.
+This folder contains a complete HTML page with both SoundForge components connected, two eight-second real piano excerpts, and original and enriched catalogs. Music: Scott Joplin’s Maple Leaf Rag, performed by Foil Fencer2 (2007), marked public domain on Wikimedia Commons. See audio/NOTICE.md for source and excerpt details.
 
 ## From a new consumer project
 
@@ -13,7 +13,7 @@ node node_modules/@pahooper/soundforge/examples/setup.mjs soundforge-demo
 node soundforge-demo/serve.mjs soundforge-demo
 ```
 
-Open http://127.0.0.1:8080. Select Play beside Pulse or Chime. If autoplay is blocked, press Play in the player. Select Wave or Bars in the player to change the visualization.
+Open http://127.0.0.1:8080. Select Play beside either Maple Leaf Rag excerpt. If autoplay is blocked, press Play in the player. Select Wave or Bars in the player to change the visualization.
 
 The page starts with the enriched catalog. Choose **Original audio only** to compare the static fallback. Select another track after changing catalogs so the player uses that catalog's track data.
 
@@ -30,8 +30,8 @@ node serve.mjs .
 Expected output:
 
 ```text
-Analyzed: Pulse
-Analyzed: Chime
+Analyzed: Maple Leaf Rag — Opening
+Analyzed: Maple Leaf Rag — Second passage
 Wrote tracks-enriched.json; 0 unsupported or failed tracks retained.
 ```
 
@@ -41,7 +41,7 @@ Reload the browser and choose a track. Both tracks are eight seconds long. Each 
 
 - `index.html`: complete HTML, styling, imports, connection, theme control, and catalog loading.
 - `lib/`: browser modules copied by setup from the installed package.
-- `audio/pulse.wav`, `audio/chime.wav`: original synthetic PCM WAV samples.
+- `audio/opening.wav`, `audio/second-passage.wav`: original synthetic PCM WAV samples.
 - `tracks.json`: preprocessing input.
 - `tracks-enriched.json`: working preprocessed output.
 - `serve.mjs`: Node-only local server with byte-range support, bound to 127.0.0.1. Use a production server for deployment.

@@ -16,7 +16,7 @@ npm run test:package
 npm run test:docs
 ```
 
-The build produces browser modules, a compiled CLI, and reproducible example audio/catalog files. The package check installs a tarball in a clean consumer, resolves entry points, checks strict TypeScript declarations, analyzes six audio format fixtures, and builds a consumer page.
+The build produces browser modules, a compiled CLI, and reproducible music excerpts and catalog files. The package check installs a tarball in a clean consumer, resolves entry points, checks strict TypeScript declarations, analyzes six audio format fixtures, and builds a consumer page.
 
 Documentation checks install a fresh packed package, run its actual setup command, regenerate example visualizations, verify the CLI version, check local serving and byte ranges, and reject an attempt to overwrite the demo directory. Browser QA of the HTML example is recorded separately in verification notes.
 
@@ -25,7 +25,7 @@ Documentation checks install a fresh packed package, run its actual setup comman
 - `src/`: component and playback logic.
 - `tools/`: build, preprocessing, and release verification.
 - `types/`: consumer declarations.
-- `examples/`: complete HTML example and original synthetic audio.
+- `examples/`: complete HTML example and attributed public-domain music.
 - `docs/`: consumer guides and verification.
 - `test/`: automated tests and decoding fixtures.
 
@@ -36,3 +36,7 @@ The public source does not include Site hosting identity or credentials. Histori
 Update package and lockfile versions together, update CHANGELOG.md, run the checks, and test the actual packed artifact. Publish only from the pahooper npm account with public access.
 
 Check README rendering on npm after registry processing completes. GitHub source links and Issues must work. Preserve notices when distributing bundles.
+
+## Visualization research and music options
+
+See [audio visualization research](research/audio-visualizations.md) for the sourced audit and recommended implementation work. Full alternative recordings, source licenses, and hashes are in assets/music-options. They are not added to the npm package.

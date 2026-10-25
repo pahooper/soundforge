@@ -32,7 +32,7 @@ npm install @pahooper/soundforge
 
 Use Node.js **22.18 or newer** for the CLI and example scripts. Browser components run in modern browsers supporting JavaScript modules and custom elements. Serve examples over HTTP; opening HTML directly with `file://` can block modules and catalog loading.
 
-The package includes compiled browser modules, TypeScript declarations, the `soundforge-analyze` CLI, and a complete HTML example with local audio and precomputed visualizations. There are no consumer install scripts. Decoder dependencies are installed by npm for CLI use.
+The package includes compiled browser modules, TypeScript declarations, the `soundforge-analyze` CLI, and a complete HTML example with real local music and precomputed visualizations. There are no consumer install scripts. Decoder dependencies are installed by npm for CLI use.
 
 ## HTML quick start
 
@@ -45,7 +45,7 @@ node node_modules/@pahooper/soundforge/examples/setup.mjs soundforge-demo
 node soundforge-demo/serve.mjs soundforge-demo
 ```
 
-Open **http://127.0.0.1:8080**. You should see the catalog and player with two eight-second tracks, **Pulse** and **Chime**. Select Play beside a track; if autoplay is blocked, press Play in the player. Bars/wave visualization uses the included enriched catalog. Choose **Original audio only**, then select a track, to compare the static fallback.
+Open **http://127.0.0.1:8080**. You should see the catalog and player with two eight-second tracks, **Maple Leaf Rag — Opening** and **Maple Leaf Rag — Second passage**. Select Play beside a track; if autoplay is blocked, press Play in the player. Bars/wave visualization uses the included enriched catalog. Choose **Original audio only**, then select a track, to compare the static fallback.
 
 The setup command creates a new folder and refuses to overwrite existing files:
 
@@ -53,15 +53,15 @@ The setup command creates a new folder and refuses to overwrite existing files:
 soundforge-demo/
   index.html
   lib/                   compiled player, catalog, and connection modules
-  audio/pulse.wav
-  audio/chime.wav
+  audio/opening.wav
+  audio/second-passage.wav
   tracks.json            preprocessing input
   tracks-enriched.json   precomputed duration and visualization data
   serve.mjs
   README.md
 ```
 
-Everything needed for playback is local. No CDN or external audio service is required after installation. The synthetic samples are included under MIT. Stop the server with **Ctrl+C**.
+Everything needed for playback is local. No CDN or external audio service is required after installation. The music recording is marked public domain; source and excerpt credits are included in audio/NOTICE.md. Stop the server with **Ctrl+C**.
 
 The included `index.html` contains the full page, styling, catalog loading, and controls. This smaller complete page also works when saved in that generated folder:
 
@@ -115,8 +115,8 @@ node serve.mjs .
 Expected CLI output:
 
 ```text
-Analyzed: Pulse
-Analyzed: Chime
+Analyzed: Maple Leaf Rag — Opening
+Analyzed: Maple Leaf Rag — Second passage
 Wrote tracks-enriched.json; 0 unsupported or failed tracks retained.
 ```
 
@@ -124,8 +124,8 @@ Input `tracks.json`:
 
 ```json
 [
-  {"title": "Pulse", "url": "./audio/pulse.wav", "category": "Synthetic"},
-  {"title": "Chime", "url": "./audio/chime.wav", "category": "Synthetic"}
+  {"title": "Maple Leaf Rag — Opening", "url": "./audio/opening.wav", "category": "Ragtime"},
+  {"title": "Maple Leaf Rag — Second passage", "url": "./audio/second-passage.wav", "category": "Ragtime"}
 ]
 ```
 
@@ -199,4 +199,4 @@ Maintained by [pahooper](https://github.com/pahooper). **Issues are welcome; pul
 
 ## License
 
-MIT. See [LICENSE](https://github.com/pahooper/soundforge/blob/main/LICENSE) and [third-party notices](https://github.com/pahooper/soundforge/blob/main/THIRD_PARTY_NOTICES.md). The packaged example's synthetic audio is original and MIT-licensed; historical Site demo recordings retain their own notices.
+MIT. See [LICENSE](https://github.com/pahooper/soundforge/blob/main/LICENSE) and [third-party notices](https://github.com/pahooper/soundforge/blob/main/THIRD_PARTY_NOTICES.md). The example piano excerpts are public domain, with recording and source credits in examples/audio/NOTICE.md. Code is MIT-licensed.

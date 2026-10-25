@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.5 — 2026-10-25
+
+- Replaced fixed-pitch synthetic demo tones with two real piano excerpts from a verified public-domain recording.
+- Added source/recording credits and a test that catches nearly fixed spectral profiles in example music.
+- Browser renderer remains unchanged; this corrects the misleading demonstration audio.
+
 ## 0.3.4 — 2026-10-25
 
 - Added a complete packaged HTML player/catalog example, original synthetic audio, and precomputed visualization data.

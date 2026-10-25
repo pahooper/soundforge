@@ -1,7 +1,7 @@
 # Third-party notices
 
 The browser bundles include the Svelte runtime (MIT) and selected Lucide icons (ISC).
-The Node-only @audio/decode dependency and its decoder dependencies are installed separately by npm and retain their own licenses and notices. They are not embedded in the browser bundles. Historical demo recordings and test fixtures are excluded from the npm package. The examples/audio folder contains original synthetic WAV samples generated for SoundForge and distributed under its MIT license.
+The Node-only @audio/decode dependency and its decoder dependencies are installed separately by npm and retain their own licenses and notices. They are not embedded in the browser bundles. Historical demo recordings and test fixtures are excluded from the npm package. The examples/audio folder contains public-domain piano excerpts from Scott Joplin’s Maple Leaf Rag, performed by Foil Fencer2 (2007), sourced from Wikimedia Commons. See examples/audio/NOTICE.md for recording and excerpt details.
 
 ## Svelte
 

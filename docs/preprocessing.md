@@ -11,22 +11,22 @@ node ../node_modules/@pahooper/soundforge/dist/analyze.js tracks.json tracks-enr
 node serve.mjs .
 ```
 
-Open http://127.0.0.1:8080 and select Pulse or Chime. The page loads the enriched catalog by default.
+Open http://127.0.0.1:8080 and select either Maple Leaf Rag excerpt. The page loads the enriched catalog by default.
 
 Input:
 
 ```json
 [
-  {"title":"Pulse","url":"./audio/pulse.wav","category":"Synthetic"},
-  {"title":"Chime","url":"./audio/chime.wav","category":"Synthetic"}
+  {"title":"Maple Leaf Rag — Opening","url":"./audio/opening.wav","category":"Ragtime"},
+  {"title":"Maple Leaf Rag — Second passage","url":"./audio/second-passage.wav","category":"Ragtime"}
 ]
 ```
 
 Expected terminal output:
 
 ```text
-Analyzed: Pulse
-Analyzed: Chime
+Analyzed: Maple Leaf Rag — Opening
+Analyzed: Maple Leaf Rag — Second passage
 Wrote tracks-enriched.json; 0 unsupported or failed tracks retained.
 ```
 
@@ -34,16 +34,16 @@ The output is a JSON array. A representative first track, with the frame array a
 
 ```js
 {
-  title: "Pulse",
-  url: "./audio/pulse.wav",
-  category: "Synthetic",
+  title: "Maple Leaf Rag — Opening",
+  url: "./audio/opening.wav",
+  category: "Ragtime",
   duration: 8,
   visualization: {
     version: 1,
     interval: 0.1,
     bands: 8,
     frames: [
-      [2, 18, 71, 33, 0, 0, 0, 0],
+      [255, 52, 51, 20, 7, 6, 3, 1],
       // 79 more frames follow in the supplied tracks-enriched.json.
     ]
   }
@@ -69,7 +69,7 @@ The current analyzer measures the first decoded audio channel using eight freque
 
 ## Local paths and browser URLs
 
-Local paths are relative to the terminal working directory, not the catalog file's directory. In the generated example, run analysis from `soundforge-demo`; then `./audio/pulse.wav` is correct for both analysis and browser playback.
+Local paths are relative to the terminal working directory, not the catalog file's directory. In the generated example, run analysis from `soundforge-demo`; then `./audio/opening.wav` is correct for both analysis and browser playback.
 
 If analysis uses a machine-only path such as `/home/me/audio/song.mp3`, the CLI preserves it. Before serving the catalog, map it to a public browser URL such as `/audio/song.mp3` and host that file at that location. Do not publish private filesystem paths unintentionally.
 
