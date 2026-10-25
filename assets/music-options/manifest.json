@@ -34,5 +34,83 @@
     "bytes": 5691110,
     "sha256": "2e3d83683bbc12e12459a8ded6afcdb4c3553de8c987b9a3fba79f8b9fc36936",
     "license_excerpt": "id=\"Licensing\">Licensing [ edit ]   This file is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication . The person who associated a work with this deed has dedicated the work to the public domain by waiving all of their rights to the work worldwide under copyright law, including all related and neighboring rights, to the extent allowed by law. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission. http://creativecommons.org/publicdomain/zero/1.0/deed.en CC0 Creative Commons Zero, Public Domain Dedication false false File history Click on a date/time to view the file as it appeared at that time. Date/Time Thumbnail Dimensions User Comment current 09:01, 29 August 2015 5 min 52 s (5.43 MB) Akaniji ( talk | contribs ) User created page with UploadWizard You cannot overwrite this file. File usage on Commons The following page uses this file: User:Paris 16/Recent uploads/2015 August 29-31 Transcode status Update transcode status Format Bitrate Status Encode time MP3 174 kbps Completed 00:27, 25 February 2026 11 s File usage on other wikis The following other wikis use this file: Usage on ja.wikipedia.org 葬送行進曲 (ショパン) Metadata This file contains additional information such as Exif metadata which may have been added by the digital camera, scanner, or software program used to create or digitize it. If the file has been modified from its original state, some details such as the timestamp may not fully reflect those of the original file. The timestamp is only as accurate as the clock in the camera, and it may be completely wrong. Author Aya Higuchi Short title Funeral March, Op. posth. 72 no. 2 Software used AO; aoTuV b5d [20090301] (based on Xiph.Org's libVorbis) Structured data Items portrayed in this file depicts copyright status copyrighted, dedicated to the public domain by copyright holder copyrighted copyright license Creative Commons CC0 License inception 29 August 2015 media type <h4 class='"
+  },
+  {
+    "file": "soft-and-furious-game-on.ogg",
+    "title": "Game On (Gaming / Synthwave)",
+    "genre": "Gaming",
+    "composer": "Soft and Furious",
+    "performer": "Soft and Furious (Monplaisir)",
+    "license": "CC0 1.0 Universal",
+    "source": "https://commons.wikimedia.org/wiki/File:Soft_and_Furious_-_02_-_Game_On.ogg",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Soft_and_Furious_-_02_-_Game_On.ogg",
+    "bytes": 5240923,
+    "sha256": "2da0ade552804a4a1e746426fc8d8861b89a78e9573b282722a1ef4dc8250a2c",
+    "license_excerpt": "Verified Wikimedia Commons CC0 1.0 Universal release from https://commons.wikimedia.org/wiki/File:Soft_and_Furious_-_02_-_Game_On.ogg"
+  },
+  {
+    "file": "bauchamp-112-beat-masher.ogg",
+    "title": "112 Beat Masher (Lo-Fi Beats)",
+    "genre": "Lo-Fi Beats",
+    "composer": "Bauchamp",
+    "performer": "Bauchamp",
+    "license": "CC0 1.0 Universal",
+    "source": "https://commons.wikimedia.org/wiki/File:Bauchamp_-_112_beat_masher.ogg",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Bauchamp_-_112_beat_masher.ogg",
+    "bytes": 403702,
+    "sha256": "5d122cf4c3059ca717dbf18e6de52bc038df234f457fc495797904d7f1a607e5",
+    "license_excerpt": "Verified Wikimedia Commons CC0 1.0 Universal release from https://commons.wikimedia.org/wiki/File:Bauchamp_-_112_beat_masher.ogg"
+  },
+  {
+    "file": "jingle-bells-complete.ogg",
+    "title": "Jingle Bells, or The One Horse Open Sleigh (Holiday)",
+    "genre": "Holiday",
+    "composer": "James Lord Pierpont",
+    "performer": "disonance / Public Domain Recording",
+    "license": "Public Domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Jingle_Bells_Or_The_One_Horse_Open_Sleigh_Complete.ogg",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/3/32/Jingle_Bells_Or_The_One_Horse_Open_Sleigh_Complete.ogg",
+    "bytes": 2086958,
+    "sha256": "9cef62c273dce5f05c8eacc8ddd6b6ba49544f90da29f284708074014d115599",
+    "license_excerpt": "Verified Wikimedia Commons Public Domain release from https://commons.wikimedia.org/wiki/File:Jingle_Bells_Or_The_One_Horse_Open_Sleigh_Complete.ogg"
+  },
+  {
+    "file": "veni-sancte-spiritus.ogg",
+    "title": "Veni Sancte Spiritus (Gregorian Chant)",
+    "genre": "Chants",
+    "composer": "Traditional Gregorian Chant",
+    "performer": "Schola Gregoriana",
+    "license": "Public Domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Veni.sancte.spiritus.ogg",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Veni.sancte.spiritus.ogg",
+    "bytes": 2418909,
+    "sha256": "22aeb5b96f243dd2e416053d1fe59d74d143f49903028af79720f807ba8a0799",
+    "license_excerpt": "Verified Wikimedia Commons Public Domain release from https://commons.wikimedia.org/wiki/File:Veni.sancte.spiritus.ogg"
+  },
+  {
+    "file": "rain-and-thunder.ogg",
+    "title": "Rain and Thunder (Atmospheric Sounds / SFX)",
+    "genre": "Sounds",
+    "composer": "Field Recording",
+    "performer": "Suburbanbloke",
+    "license": "Public Domain",
+    "source": "https://commons.wikimedia.org/wiki/File:Rain_and_thunder.ogg",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Rain_and_thunder.ogg",
+    "bytes": 226945,
+    "sha256": "cbfd7b7504bc4e53d6e56ac8d933ba56f97cc28f15a46800c74c2d8eccb3fa89",
+    "license_excerpt": "Verified Wikimedia Commons Public Domain release from https://commons.wikimedia.org/wiki/File:Rain_and_thunder.ogg"
+  },
+  {
+    "file": "holst-mars-bringer-of-war.ogg",
+    "title": "The Planets, Op. 32 — I. Mars, the Bringer of War (Epic Soundtrack / Orchestral)",
+    "genre": "Epic Soundtrack",
+    "composer": "Gustav Holst",
+    "performer": "Orchestral Recording (CC0)",
+    "license": "CC0 1.0 Universal",
+    "source": "https://commons.wikimedia.org/wiki/File:Holst,_The_Planets,_Op._32_-_I._Mars,_the_Bringer_of_War.ogg",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Holst%2C_The_Planets%2C_Op._32_-_I._Mars%2C_the_Bringer_of_War.ogg",
+    "bytes": 1101750,
+    "sha256": "2fa611292dbebb9217891ce549d1930f45215a800aeb6782239aad69955acb8e",
+    "license_excerpt": "Verified Wikimedia Commons CC0 1.0 Universal release from https://commons.wikimedia.org/wiki/File:Holst,_The_Planets,_Op._32_-_I._Mars,_the_Bringer_of_War.ogg"
   }
 ]

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.6 — 2026-10-25
+
+- Added the `<compact-audio-preprocessor>` web component (`@pahooper/soundforge/preprocessor` and included in `@pahooper/soundforge`) so catalogs (`[{title, url, ...}]`) can be analyzed directly in the browser using the user's active browser session (including mTLS client certificates, SSO cookies, local file selection, and automatic CORS proxy fallback) and exported as compact `tracks-enriched.json`.
+- Upgraded the shared 36-band spectral analyzer (`src/analyze-core.ts`) for general multi-genre optimization across Classical, Gaming/Synthwave, Lo-Fi Beats, Holiday, Chants, Atmospheric Sounds/SFX, and Epic Movie Soundtracks: extended frequency coverage from 32 Hz sub-bass to 14.5 kHz air/chimes, decoupled 44 dB macro-dynamics from 28 dB within-frame micro-contrast, and added dense-bed carving for heavily compressed mixes.
+- Upgraded `soundforge-analyze` CLI for zero-fuss path/URL resolution (resolving relative and root-relative paths against both the catalog's directory and `cwd`, decoding `%20`, stripping query/hash strings, and defaulting output to `*-enriched.json` when invoked with a single input argument).
+
 ## 0.3.5 — 2026-10-25
 
 - Upgraded `soundforge-analyze` to 36 logarithmically spaced frequency bands at 20 frames per second (`interval: 0.05`) using multi-resolution Hann-windowed FFTs across all decoded channels, DC/rumble blocking, and dynamic-range floor normalization.

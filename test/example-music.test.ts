@@ -44,10 +44,11 @@ test('all real music options in assets/music-options produce varied 36-band spec
   const manifest=JSON.parse(readFileSync('assets/music-options/manifest.json','utf8'));
   for(const option of manifest){
     const decoded=await decode(new Uint8Array(readFileSync(`assets/music-options/${option.file}`)));
-    // Analyze a 12-second musical window starting at 5s
+    // Analyze a 12-second musical window starting at 5s (or 0s for short clips)
     const sr=decoded.sampleRate;
-    const start=Math.round(sr*5);
-    const count=Math.min(Math.round(sr*12),decoded.channelData[0].length-start);
+    const totalLen=decoded.channelData[0].length;
+    const start=totalLen>sr*18?Math.round(sr*5):0;
+    const count=Math.min(Math.round(sr*12),totalLen-start);
     const slice=decoded.channelData.map((ch:Float32Array)=>ch.subarray(start,start+count));
     const vis=analyzeAudio(slice,sr);
     assert.equal(vis.bands,36);

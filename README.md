@@ -98,11 +98,34 @@ The included `index.html` contains the full page, styling, catalog loading, and 
 </html>
 ```
 
-The custom-element tags are `<compact-audio-player>` and `<compact-audio-browser>`. Connect them before assigning a catalog so early selections are handled.
+The custom-element tags are `<compact-audio-player>`, `<compact-audio-browser>`, and `<compact-audio-preprocessor>`. Connect the browser and player before assigning a catalog so early selections are handled.
 
 ## Preprocess audio
 
-Preprocessing is optional: audio plays without it, with a static visualization fallback. Run preprocessing when preparing or updating a catalog, rather than analyzing audio in the browser during playback. Audio files are not transcoded or changed.
+Preprocessing is optional: audio plays without it, with a static visualization fallback. You can preprocess catalogs either **directly in the browser** with `<compact-audio-preprocessor>` (which automatically uses your active browser session, cookies, mTLS client certificates, or local files) or ahead of time with the **`soundforge-analyze` CLI**. Audio files are not transcoded or changed.
+
+### Option 1: Zero-fuss in-browser preprocessing (`<compact-audio-preprocessor>`)
+
+The packaged demo (`index.html`) includes `<compact-audio-preprocessor>` right on the page, or you can import `@pahooper/soundforge/preprocessor` in any page where you can play your audio:
+
+```html
+<compact-audio-preprocessor id="preprocessor"></compact-audio-preprocessor>
+<script type="module">
+  import '@pahooper/soundforge/preprocessor';
+  await customElements.whenDefined('compact-audio-preprocessor');
+  const preprocessor = document.querySelector('#preprocessor');
+  preprocessor.catalog = [
+    {"title": "Maple Leaf Rag — Opening", "url": "./audio/opening.wav", "category": "Ragtime"}
+  ];
+  preprocessor.addEventListener('catalogenriched', event => {
+    console.log('Enriched catalog:', event.detail.catalog);
+  });
+</script>
+```
+
+Paste or load `tracks.json` (and optionally attach local audio files), click **Analyze catalog**, and click **Download `tracks-enriched.json`** or **Copy JSON**.
+
+### Option 2: Command-line preprocessing (`soundforge-analyze`)
 
 Using the generated demo, stop its server and run:
 

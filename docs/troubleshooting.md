@@ -4,7 +4,7 @@
 
 Run the complete example over HTTP, not by double-clicking HTML. Check the browser Console and Network panels for missing JavaScript modules or wrong MIME types. Import player/browser registration before using them, and wait for `customElements.whenDefined` before assigning properties.
 
-The tag names are `compact-audio-player` and `compact-audio-browser`. Do not load duplicate versions on a page.
+The tag names are `compact-audio-player`, `compact-audio-browser`, and `compact-audio-preprocessor`. Do not load duplicate versions on a page.
 
 ## The example server cannot start
 
@@ -39,7 +39,7 @@ Select the enriched catalog, then select the track again. In layered mode, visua
 
 ## Preprocessing cannot find an audio file
 
-Run from the directory where relative paths in each track's `url` resolve. The CLI does not resolve those paths relative to the JSON file. Check spelling and case. Use distinct input/output files.
+The CLI checks relative and root-relative paths against both the working directory and the input catalog's directory. Check spelling and case, or use `<compact-audio-preprocessor>` in the browser (which uses your active browser session or attached local files). Use distinct input/output files.
 
 A filesystem path that works on your machine is not automatically a browser-accessible URL; map it before deploying the catalog.
 

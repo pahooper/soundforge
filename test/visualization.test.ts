@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {barsAt,frameAt,nextIndex,stepBars,waveOffset} from '../src/visualization.ts';
-import {analyzeAudio} from '../tools/analyze.ts';
+import {analyzeAudio,compactCatalogJson} from '../src/analyze-core.ts';
 
 test('interpolates visualization by actual playback position',()=>{
  const data={version:1 as const,interval:0.1,bands:2,frames:[[0,255],[255,0]]};
@@ -123,4 +123,42 @@ test('diagnostic signals: silence, DC offset, sine octaves, sweep, two-tone, noi
  assert.equal(Math.max(...impulse.frames[0]),0);
  assert.ok(Math.max(...impulse.frames[4])>200,'impulse at 0.235s should be captured near frame 4 (t=0.20..0.25s)');
  assert.equal(Math.max(...impulse.frames[8]),0);
+
+ // 8. Multi-genre coverage: 38Hz 808 sub-bass (Lo-Fi/Gaming/Epic) and 11.5kHz bells/hi-hat (Holiday/SFX)
+ const subBass=analyzeAudio(makeSignal(0.5,t=>0.6*Math.sin(2*Math.PI*38*t)),sr).frames[5];
+ assert.ok(Math.max(...subBass.slice(0,3))>=230,`38Hz 808 sub-bass must excite bands 0..2 strongly, got ${subBass.slice(0,4).join(',')}`);
+ const sleighBells=analyzeAudio(makeSignal(0.5,t=>0.5*Math.sin(2*Math.PI*11500*t)),sr).frames[5];
+ assert.ok(Math.max(...sleighBells.slice(31,36))>=230,`11.5kHz holiday chimes/hi-hats must excite bands 31..35 strongly, got ${sleighBells.slice(30,36).join(',')}`);
+
+ // 9. Epic Soundtrack / Classical wide dynamic range: -36 dB quiet intro followed by 0 dB climax
+ const epicDynamic=analyzeAudio(makeSignal(1.0,t=>(t<0.45?0.0158:1.0)*Math.sin(2*Math.PI*440*t)),sr);
+ const quietPeak=Math.max(...epicDynamic.frames[4]);
+ const climaxPeak=Math.max(...epicDynamic.frames[14]);
+ assert.ok(quietPeak>=28&&quietPeak<=120,`-36 dB quiet intro should remain visible (28..120), got ${quietPeak}`);
+ assert.ok(climaxPeak>=245,`0 dB climax should reach near 255, got ${climaxPeak}`);
+
+ // 10. Brickwall-compressed Lo-Fi / Gaming mix: sub-bass + mid lead + hi-hat over dense -14 dB broadband bed
+ let lofiSeed=987654321;
+ const brickwall=analyzeAudio(makeSignal(0.6,t=>{
+  lofiSeed=(1103515245*lofiSeed+12345)&0x7fffffff;
+  const bed=((lofiSeed/0x3fffffff)-1)*0.12;
+  return bed+0.45*Math.sin(2*Math.PI*48*t)+0.4*Math.sin(2*Math.PI*620*t)+0.35*Math.sin(2*Math.PI*9500*t);
+ }),sr).frames[6];
+ const sortedBands=[...brickwall].sort((a,b)=>a-b);
+ const medianBand=sortedBands[18];
+ const topBand=sortedBands[35];
+ assert.ok(topBand>=235,`brickwall mix peaks should stay strong (${topBand})`);
+ assert.ok(topBand-medianBand>=80,`brickwall mix must preserve peak-to-median contrast (top=${topBand}, median=${medianBand})`);
+
+ // 11. Vocal Chant dual formants (500Hz + 1850Hz) -> two distinct formant peaks with valley between
+ const chant=analyzeAudio(makeSignal(0.5,t=>0.45*Math.sin(2*Math.PI*500*t)+0.38*Math.sin(2*Math.PI*1850*t)),sr).frames[5];
+ const f1Peak=Math.max(...chant.slice(12,18));
+ const formantValley=Math.min(...chant.slice(18,22));
+ const f2Peak=Math.max(...chant.slice(22,28));
+ assert.ok(f1Peak>=200&&f2Peak>=200&&formantValley<100,`chant formants should separate cleanly: f1=${f1Peak}, valley=${formantValley}, f2=${f2Peak}`);
+
+ // 12. compactCatalogJson rounds duration and outputs valid compact JSON
+ const jsonStr=compactCatalogJson([{title:'Track',url:'./a.mp3',duration:12.34567,visualization:{version:1,interval:0.05,bands:36,frames:[new Array(36).fill(12)]}}]);
+ const parsed=JSON.parse(jsonStr);
+ assert.equal(parsed[0].duration,12.35);
 });

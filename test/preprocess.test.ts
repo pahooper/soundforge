@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync,writeFileSync,readFileSync,rmSync} from 'node:fs';
+import {mkdtempSync,writeFileSync,readFileSync,rmSync,mkdirSync,copyFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 function run(tracks:unknown){const dir=mkdtempSync(join(tmpdir(),'player-test-'));const input=join(dir,'in.json'),out=join(dir,'out.json');writeFileSync(input,JSON.stringify(tracks));const result=spawnSync(process.execPath,['--experimental-strip-types','tools/analyze.ts',input,out],{encoding:'utf8'});return {result,out,cleanup:()=>rmSync(dir,{recursive:true,force:true})}}
@@ -19,4 +19,24 @@ test('downloads and preprocesses HTTP audio without any CORS headers',async()=>{
  try{writeFileSync(input,JSON.stringify([{title:'HTTP no CORS',url:`http://127.0.0.1:${address.port}/audio.mp3`}])) ;
  const child=spawn(process.execPath,['--experimental-strip-types','tools/analyze.ts',input,output]);let stderr='';child.stderr.on('data',c=>stderr+=c);child.stdout.resume();const code=await new Promise<number|null>((resolve,reject)=>{child.on('error',reject);child.on('close',resolve)});assert.equal(code,0,stderr);assert.ok(JSON.parse(readFileSync(output,'utf8'))[0].visualization.frames.length>0);
  }finally{server.closeAllConnections();await new Promise<void>(r=>server.close(()=>r()));rmSync(dir,{recursive:true,force:true})}
+});
+test('single-argument CLI defaults to *-enriched.json and resolves paths relative to catalog directory',()=>{
+ const dir=mkdtempSync(join(tmpdir(),'player-zero-fuss-'));
+ const sub=join(dir,'nested');
+ const audioDir=join(sub,'audio');
+ mkdirSync(audioDir,{recursive:true});
+ copyFileSync('test/fixtures/audio.wav',join(audioDir,'sample track.wav'));
+ const input=join(sub,'tracks.json');
+ const expectedOut=join(sub,'tracks-enriched.json');
+ writeFileSync(input,JSON.stringify([{title:'Relative Zero Fuss',url:'./audio/sample%20track.wav?v=1',category:'Test'}]));
+ try{
+  const result=spawnSync(process.execPath,['--experimental-strip-types',join(process.cwd(),'tools/analyze.ts'),input],{cwd:tmpdir(),encoding:'utf8'});
+  assert.equal(result.status,0,result.stderr);
+  const [enriched]=JSON.parse(readFileSync(expectedOut,'utf8'));
+  assert.equal(enriched.title,'Relative Zero Fuss');
+  assert.equal(enriched.visualization.bands,36);
+  assert.ok(enriched.visualization.frames.length>0);
+ }finally{
+  rmSync(dir,{recursive:true,force:true});
+ }
 });

@@ -10,7 +10,22 @@ const port = Number(process.env.PORT || 8080);
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg','.flac':'audio/flac','.m4a':'audio/mp4','.md':'text/plain; charset=utf-8'};
 const server = createServer(async (req,res) => {
   try {
-    let path = resolve(root, '.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));
+    const reqUrl = new URL(req.url,'http://localhost');
+    if (reqUrl.pathname === '/__soundforge_fetch') {
+      const targetUrl = reqUrl.searchParams.get('url') || '';
+      if (!/^https?:\/\//i.test(targetUrl)) {res.writeHead(400);res.end('Invalid URL');return;}
+      const upstream = await fetch(targetUrl, {
+        headers: {'User-Agent':'Mozilla/5.0 (compatible; SoundForge/0.3)','Accept':'audio/*,*/*;q=0.8'},
+        redirect: 'follow',
+        signal: AbortSignal.timeout(120000)
+      });
+      if (!upstream.ok) {res.writeHead(upstream.status);res.end('Upstream HTTP '+upstream.status);return;}
+      const buf = Buffer.from(await upstream.arrayBuffer());
+      res.writeHead(200, {'Content-Type':upstream.headers.get('content-type')||'application/octet-stream','Cache-Control':'no-store'});
+      res.end(buf);
+      return;
+    }
+    let path = resolve(root, '.'+decodeURIComponent(reqUrl.pathname));
     if (path!==root && !path.startsWith(root+sep)) {res.writeHead(403);res.end('Forbidden');return;}
     if ((await stat(path)).isDirectory()) path=join(path,'index.html');
     const bytes=await readFile(path);

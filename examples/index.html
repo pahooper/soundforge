@@ -7,12 +7,13 @@
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; padding: 32px 20px; background: #edf1f4; color: #24323e; font: 16px/1.6 system-ui, sans-serif; }
-    header, footer { max-width: 960px; margin: 0 auto 24px; }
+    header, footer, .preprocess-section { max-width: 960px; margin: 0 auto 24px; }
     h1 { margin: 0; font-size: 30px; }
     p { margin: 8px 0; }
     main { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 24px; max-width: 1000px; margin: auto; }
     compact-audio-browser { width: min(540px, 100%); }
     compact-audio-player { width: min(360px, 100%); }
+    compact-audio-preprocessor { width: min(924px, 100%); margin: 24px auto 0; }
     label { display: inline-flex; align-items: center; gap: 8px; margin: 8px 16px 8px 0; }
     select { font: inherit; padding: 4px 8px; }
     footer { margin-top: 24px; font-size: 14px; }
@@ -23,7 +24,7 @@
 <body>
   <header>
     <h1>SoundForge</h1>
-    <p>A complete player and catalog, connected in one HTML page.</p>
+    <p>A complete player, catalog, and zero-fuss browser preprocessor in one HTML page.</p>
     <p>Choose Play beside a track. Build a queue for a playlist, or choose Layers, Set base, and + Layer to mix tracks.</p>
     <label>Theme <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
     <label>Catalog <select id="catalog"><option value="tracks-enriched.json">With preprocessed visualization</option><option value="tracks.json">Original audio only</option></select></label>
@@ -33,23 +34,29 @@
     <compact-audio-browser id="library" theme="dark"></compact-audio-browser>
     <compact-audio-player id="player" theme="dark"></compact-audio-player>
   </main>
+  <section class="preprocess-section">
+    <compact-audio-preprocessor id="preprocessor" theme="dark"></compact-audio-preprocessor>
+  </section>
   <footer>
     <p>Two eight-second public-domain piano excerpts are included, performed by Foil Fencer2 (2007). Start with low speaker volume.</p>
-    <p>The enriched catalog adds duration and visualization data; audio files stay unchanged. Original audio only uses the static fallback graphic.</p>
+    <p>The enriched catalog adds duration and visualization data; audio files stay unchanged. Original audio only uses the static fallback graphic, or you can click <strong>Analyze catalog</strong> above to enrich tracks right in your browser.</p>
     <p><a href="./audio/NOTICE.md">Music source and public-domain notice</a></p>
     <p><a href="./tracks.json">Input catalog</a> · <a href="./tracks-enriched.json">Enriched catalog</a> · <a href="./README.md">Example instructions</a></p>
   </footer>
   <script type="module">
     import './lib/audio-player.js';
     import './lib/audio-browser.js';
+    import './lib/audio-preprocessor.js';
     import {connectAudioBrowser} from './lib/connect.js';
 
     await Promise.all([
       customElements.whenDefined('compact-audio-player'),
-      customElements.whenDefined('compact-audio-browser')
+      customElements.whenDefined('compact-audio-browser'),
+      customElements.whenDefined('compact-audio-preprocessor')
     ]);
     const library = document.querySelector('#library');
     const player = document.querySelector('#player');
+    const preprocessor = document.querySelector('#preprocessor');
     const status = document.querySelector('#status');
     const disconnect = connectAudioBrowser(library, player);
     window.addEventListener('pagehide', disconnect, {once:true});
@@ -57,6 +64,11 @@
     document.querySelector('#theme').addEventListener('change', event => {
       library.theme = event.target.value;
       player.theme = event.target.value;
+      preprocessor.theme = event.target.value;
+    });
+    preprocessor.addEventListener('catalogenriched', event => {
+      library.catalog = event.detail.catalog;
+      status.textContent = 'Enriched ' + event.detail.catalog.length + ' tracks in browser and applied to catalog.';
     });
     async function loadCatalog(file) {
       try {
@@ -64,6 +76,7 @@
         if (!response.ok) throw new Error('Catalog returned HTTP '+response.status);
         const tracks = await response.json();
         library.catalog = tracks;
+        preprocessor.catalog = tracks.map(({title, url, category}) => ({title, url, ...(category ? {category} : {})}));
         status.textContent = 'Ready: '+tracks.length+' tracks. Select Play beside a track; press Play in the player if your browser blocks autoplay.';
       } catch (error) {
         status.textContent = 'Could not load catalog: '+error.message+'. Run the local server instead of opening this file directly.';

@@ -4,9 +4,10 @@
 
 | Import | Purpose | Needs a browser DOM at import time? |
 | --- | --- | --- |
-| `@pahooper/soundforge` | Registers both components and exports helpers/connection. | Yes |
+| `@pahooper/soundforge` | Registers player, browser, and preprocessor components and exports helpers/connection. | Yes |
 | `@pahooper/soundforge/player` | Registers `compact-audio-player`. | Yes |
 | `@pahooper/soundforge/browser` | Registers `compact-audio-browser`. | Yes |
+| `@pahooper/soundforge/preprocessor` | Registers `compact-audio-preprocessor` for in-browser catalog preprocessing. | Yes |
 | `@pahooper/soundforge/helpers` | Pure mix helpers. | No |
 | `@pahooper/soundforge/connect` | Optional event wiring between existing elements. | No |
 | `@pahooper/soundforge/package.json` | Package metadata. | No |
@@ -91,6 +92,7 @@ All custom events bubble and cross the Shadow DOM boundary; read `event.detail`.
 | browser | `queuechange` | `{queue}` |
 | browser | `modechange` | `{mode}` |
 | browser | `mixchange` | `{mix}` for assignments/moves/removal |
+| preprocessor | `catalogenriched` | `{catalog, json, failures}` when in-browser analysis completes |
 
 Mix playback failures appear in the player status; transport/error events listed above currently apply to single/playlist playback. The components remain independent; `connectAudioBrowser` forwards selection, queue, mode and mix updates and returns a cleanup function.
 
@@ -115,12 +117,12 @@ The helper responds to UI events; it does not automatically copy arbitrary progr
 ## CLI
 
 ```sh
-npx --no-install soundforge-analyze input.json output.json
+npx --no-install soundforge-analyze input.json [output.json]
 npx --no-install soundforge-analyze --help
 npx --no-install soundforge-analyze --version
 ```
 
-The CLI takes two positional paths, or `--help`/`-h`, or `--version`. There are no supported authentication, output-format, or concurrency options. Input is a JSON array of tracks with string title/url fields. Input and output must be distinct files. Output is overwritten if it exists.
+The CLI takes an input catalog path and an optional output path (defaulting to `<input>-enriched.json`), or `--help`/`-h`, or `--version`. Relative and root-relative audio paths are checked against both the working directory and the input catalog's directory. Input is a JSON array of tracks with string title/url fields. Input and output must be distinct files. Output is overwritten if it exists.
 
 Exit codes: 0 all tracks analyzed, 1 invalid usage/catalog or fatal I/O, 2 output written with failed tracks retained. [Preprocessing details and output schema](preprocessing.md).
 

@@ -1,8 +1,24 @@
 # Audio preprocessing
 
-The CLI reads a JSON catalog, analyzes each audio file, and writes a new catalog with duration and visualization data. It preserves additional fields. It does not convert audio formats, alter audio files, or upload local files to a service.
+SoundForge can analyze a JSON catalog either **directly in the browser** with `<compact-audio-preprocessor>` (`@pahooper/soundforge/preprocessor`) or via the **`soundforge-analyze` CLI**, writing a new catalog with duration and compact 36-band visualization data. Both use the same multi-genre analyzer (`32 Hz` to `14.5 kHz`) and preserve additional fields without altering audio files.
 
-## Working example
+## Zero-fuss browser component (`<compact-audio-preprocessor>`)
+
+When your audio URLs live behind browser session authentication, SSO cookies, mTLS client certificates, or local files you can play in the browser, drop `<compact-audio-preprocessor>` onto the page (already included in `examples/index.html`):
+
+```html
+<compact-audio-preprocessor id="preprocessor"></compact-audio-preprocessor>
+<script type="module">
+  import '@pahooper/soundforge/preprocessor';
+  await customElements.whenDefined('compact-audio-preprocessor');
+  const preprocessor = document.querySelector('#preprocessor');
+  preprocessor.catalog = [{title: 'Opening', url: './audio/opening.wav', category: 'Ragtime'}];
+</script>
+```
+
+Click **Analyze catalog**, then **Download `tracks-enriched.json`** or **Copy JSON** (or listen for the composed `catalogenriched` event).
+
+## Working CLI example
 
 Follow the README HTML quick start to create `soundforge-demo`. From that folder:
 
@@ -65,11 +81,11 @@ This illustrative object is not a replacement catalog. The packaged `examples/tr
 | `visualization.frames` | Arrays of band values, integer 0–255. |
 | Other fields | Preserved, for example `category`, `id`, and application metadata. |
 
-The analyzer removes DC offset and sub-bass rumble, combines power spectra across decoded channels using multi-resolution Hann-windowed FFTs across 36 logarithmically spaced frequency bands (65 Hz to 9.2 kHz), and normalizes values relative to the track's 99th-percentile spectral peak. It is a compact visualization representation, not loudness measurement or lossless audio data.
+The analyzer removes DC offset and infrasonic rumble (< 18 Hz), combines power spectra across decoded channels using multi-resolution Hann-windowed FFTs across 36 logarithmically spaced frequency bands (32 Hz to 14.5 kHz), and maps values with a 44 dB macro-dynamic envelope and 28 dB within-frame micro-contrast (optimized across Classical, Gaming, Lo-Fi Beats, Holiday, Chants, Sounds/SFX, and Epic Movie Soundtracks). It is a compact visualization representation, not loudness measurement or lossless audio data.
 
 ## Local paths and browser URLs
 
-Local paths are relative to the terminal working directory, not the catalog file's directory. In the generated example, run analysis from `soundforge-demo`; then `./audio/opening.wav` is correct for both analysis and browser playback.
+The CLI resolves relative and root-relative paths against both the terminal working directory and the catalog file's directory (and strips URL query/hash suffixes). If you omit the output path (`soundforge-analyze tracks.json`), it defaults to `tracks-enriched.json`.
 
 If analysis uses a machine-only path such as `/home/me/audio/song.mp3`, the CLI preserves it. Before serving the catalog, map it to a public browser URL such as `/audio/song.mp3` and host that file at that location. Do not publish private filesystem paths unintentionally.
 

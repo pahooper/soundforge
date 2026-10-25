@@ -13,7 +13,7 @@ for(const [input,name] of pages){
 }
 await cp('examples',target+'/examples',{recursive:true});
 await cp('dist',target+'/examples/lib',{recursive:true});
-for(const name of ['audio-player.js','audio-browser.js','connect.js'])await cp('dist/'+name,target+'/'+name);
+for(const name of ['audio-player.js','audio-browser.js','audio-preprocessor.js','connect.js'])await cp('dist/'+name,target+'/'+name);
 const siteCatalog=(await readFile('public/catalog.json','utf8')).replaceAll('"./public/','"./');
 await writeFile(target+'/catalog.json',siteCatalog);
 let demo=await readFile(target+'/index.html','utf8');

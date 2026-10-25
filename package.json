@@ -1,6 +1,6 @@
 {
   "name": "@pahooper/soundforge",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -52,6 +52,11 @@
       "import": "./dist/audio-browser.js",
       "default": "./dist/audio-browser.js"
     },
+    "./preprocessor": {
+      "types": "./types/preprocessor.d.ts",
+      "import": "./dist/audio-preprocessor.js",
+      "default": "./dist/audio-preprocessor.js"
+    },
     "./helpers": {
       "types": "./types/helpers.d.ts",
       "import": "./dist/helpers.js",
@@ -89,9 +94,11 @@
     "./dist/index.js",
     "./dist/audio-player.js",
     "./dist/audio-browser.js",
+    "./dist/audio-preprocessor.js",
     "./src/*.svelte",
     "./src/register.ts",
-    "./src/browser-register.ts"
+    "./src/browser-register.ts",
+    "./src/preprocessor-register.ts"
   ],
   "keywords": [
     "audio",
