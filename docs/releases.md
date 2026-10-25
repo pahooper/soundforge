@@ -2,6 +2,8 @@
 
 The public GitHub repository includes `.github/workflows/publish.yml`. It runs when a **stable GitHub release is published**, not on ordinary commits, draft releases, or releases marked as prereleases.
 
+Trusted publishing was configured on 2026-10-25 for pahooper/soundforge and publish.yml. No npm token is stored in GitHub.
+
 ## One-time npm trusted publisher setup
 
 An npm package owner must connect the existing package to GitHub Actions in the package's npm Settings → Trusted publishing:

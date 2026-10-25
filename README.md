@@ -191,7 +191,7 @@ Stable GitHub releases publish to npm through a verified GitHub Actions workflow
 
 ## Demo and support
 
-The original [Audio Player Demo](https://phil-audio-player-demo.fabledcreek32.chatgpt.site) is currently owner-only and requires authorized access. Anyone can run the packaged HTML example locally using the quick-start commands above.
+The original [Audio Player Demo](https://phil-audio-player-demo.pnod.chatgpt.site) is currently owner-only and requires authorized access. Anyone can run the packaged HTML example locally using the quick-start commands above.
 
 [Source repository](https://github.com/pahooper/soundforge) · [Report bugs or request features](https://github.com/pahooper/soundforge/issues) · [Release notes](https://github.com/pahooper/soundforge/blob/main/CHANGELOG.md)
 

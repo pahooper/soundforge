@@ -13,4 +13,4 @@
 
 Firefox/Safari remain unverified. Native media mixing is not sample-accurate. The example server is local development tooling. Decoder fixture coverage does not imply every codec/container variant is supported. Historical source verification is retained in verification-v0.3.md.
 
-Release automation requires the one-time npm trusted publisher relationship; a committed workflow alone is not proof of enabled publication. GitHub workflow and release results should be checked separately.
+GitHub Verify passed on Node 22.18.0 and Node 24. The npm trusted publisher relationship was confirmed for pahooper/soundforge, workflow publish.yml. The release publishing run is verified separately.
