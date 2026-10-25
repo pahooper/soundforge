@@ -1,6 +1,15 @@
 # Audio preprocessing
 
-SoundForge can analyze a JSON catalog either **directly in the browser** with `<compact-audio-preprocessor>` (`@pahooper/soundforge/preprocessor`) or via the **`soundforge-analyze` CLI**, writing a new catalog with duration and compact 36-band visualization data. Both use the same multi-genre analyzer (`32 Hz` to `14.5 kHz`) and preserve additional fields without altering audio files.
+SoundForge can analyze a JSON catalog either **directly in the browser** with `<compact-audio-preprocessor>` (`@pahooper/soundforge/preprocessor`), via the standalone static page **`examples/preprocess.html`**, or via the **`soundforge-analyze` CLI**, writing a new catalog with duration and compact 36-band visualization data. All use the same multi-genre analyzer (`32 Hz` to `14.5 kHz`) and preserve additional fields without altering audio files.
+
+## Zero-fuss static preprocessor page (`examples/preprocess.html`)
+
+For a completely standalone browser workflow without installing Node or writing build scripts:
+1. Open `preprocess.html` in your browser (or deploy it statically to GitHub Pages, S3, or any internal host).
+2. Load your `tracks.json` or pass `?catalog=<url>` in the browser URL to load it automatically.
+3. Every track renders an `<audio controls preload="none">` preview so you can verify playback before analyzing.
+4. Click **Analyze catalog**. Tracks process in-memory. If a cross-origin URL is blocked by browser CORS, the row highlights and provides an immediate **Attach file** button.
+5. Click **Download tracks-enriched.json** or **Copy JSON**.
 
 ## Zero-fuss browser component (`<compact-audio-preprocessor>`)
 

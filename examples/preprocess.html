@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoundForge — static audio preprocessor</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 20px;
+      background: #edf1f4;
+      color: #24323e;
+      font: 16px/1.6 system-ui, sans-serif;
+    }
+    header, footer, main {
+      max-width: 800px;
+      margin: 0 auto 24px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    p {
+      margin: 8px 0;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin: 12px 0 20px;
+      font-size: 14px;
+    }
+    a {
+      color: #076b83;
+    }
+    compact-audio-preprocessor {
+      width: 100%;
+    }
+    footer {
+      margin-top: 32px;
+      font-size: 13px;
+      color: #556677;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="./index.html">← Player &amp; catalog demo</a>
+      <a href="../docs/preprocessing.html">Preprocessing guide</a>
+      <a href="../docs/">Documentation</a>
+    </nav>
+    <h1>Static Audio Preprocessor</h1>
+    <p>
+      Analyze any audio catalog directly in your browser. Each track includes an audio preview element to verify playback. You can also pass <code>?catalog=&lt;url&gt;</code> in the page address to load a catalog automatically.
+    </p>
+  </header>
+  <main>
+    <compact-audio-preprocessor id="preprocessor" theme="dark"></compact-audio-preprocessor>
+  </main>
+  <footer>
+    <p>
+      SoundForge preprocessor runs completely in client-side Web Audio. Audio files are not uploaded to any server.
+    </p>
+  </footer>
+  <script type="module">
+    import './lib/audio-preprocessor.js';
+
+    await customElements.whenDefined('compact-audio-preprocessor');
+    const preprocessor = document.querySelector('#preprocessor');
+
+    const params = new URLSearchParams(window.location.search);
+    const catalogUrl = params.get('catalog');
+    if (catalogUrl) {
+      try {
+        const res = await fetch(catalogUrl);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        preprocessor.catalog = data;
+      } catch (e) {
+        console.error('Failed to load catalog from URL parameter:', e);
+      }
+    }
+  </script>
+</body>
+</html>

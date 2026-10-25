@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.7 — 2026-10-25
+
+- Added `examples/preprocess.html`, a zero-backend static preprocessor page that takes a catalog JSON (via file load, paste, or `?catalog=<url>` query parameter), creates live `<audio>` preview elements for each track, runs in-browser 36-band spectral analysis, indicates per-track status (`ok`, `blocked`, or `error`), supports per-row file attachment for cross-origin audio blocked by CORS, and exports compact `tracks-enriched.json`.
+- Extracted client-side preprocessing logic into `src/preprocess-core.ts` and enhanced `<compact-audio-preprocessor>` with per-track preview rows, clear CORS guidance, and direct file attachment.
+
 ## 0.3.6 — 2026-10-25
 
 - Added the `<compact-audio-preprocessor>` web component (`@pahooper/soundforge/preprocessor` and included in `@pahooper/soundforge`) so catalogs (`[{title, url, ...}]`) can be analyzed directly in the browser using the user's active browser session (including mTLS client certificates, SSO cookies, local file selection, and automatic CORS proxy fallback) and exported as compact `tracks-enriched.json`.

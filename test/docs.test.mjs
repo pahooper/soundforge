@@ -13,7 +13,7 @@ function run(command,args,cwd=temp){
 try {
   const [packed]=JSON.parse(run('npm',['pack','--ignore-scripts','--json','--pack-destination',temp],root));
   const paths=packed.files.map(f=>f.path);
-  for(const required of ['examples/index.html','examples/setup.mjs','examples/serve.mjs','examples/audio/opening.wav','examples/tracks.json','examples/tracks-enriched.json','docs/preprocessing.md','docs/reference.md','docs/troubleshooting.md'])assert.ok(paths.includes(required),required);
+  for(const required of ['examples/index.html','examples/preprocess.html','examples/setup.mjs','examples/serve.mjs','examples/audio/opening.wav','examples/tracks.json','examples/tracks-enriched.json','docs/preprocessing.md','docs/reference.md','docs/troubleshooting.md'])assert.ok(paths.includes(required),required);
   assert.ok(!paths.some(p=>p.startsWith('public/')||p.startsWith('test/')||p.includes('.openai')||p.includes('superpowers')));
   await writeFile(join(temp,'package.json'),JSON.stringify({name:'soundforge-docs-consumer',private:true,type:'module'}));
   run('npm',['install','--ignore-scripts','--no-audit','--no-fund',join(temp,packed.filename)]);

@@ -9,7 +9,7 @@ let existing;
 try { existing = await readdir(destination); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 if (existing?.length) throw new Error('Choose a new or empty destination folder. Existing files will not be overwritten.');
 await mkdir(destination, {recursive:true});
-for (const name of ['index.html','tracks.json','tracks-enriched.json','audio','serve.mjs','README.md']) {
+for (const name of ['index.html','preprocess.html','tracks.json','tracks-enriched.json','audio','serve.mjs','README.md']) {
   await cp(join(here,name), join(destination,name), {recursive:true});
 }
 await cp(new URL('../dist/',import.meta.url), join(destination,'lib'), {recursive:true});

@@ -102,9 +102,13 @@ The custom-element tags are `<compact-audio-player>`, `<compact-audio-browser>`,
 
 ## Preprocess audio
 
-Preprocessing is optional: audio plays without it, with a static visualization fallback. You can preprocess catalogs either **directly in the browser** with `<compact-audio-preprocessor>` (which automatically uses your active browser session, cookies, mTLS client certificates, or local files) or ahead of time with the **`soundforge-analyze` CLI**. Audio files are not transcoded or changed.
+Preprocessing is optional: audio plays without it, with a static visualization fallback. You can preprocess catalogs **directly in the browser** with the standalone page `preprocess.html` or `<compact-audio-preprocessor>` (which automatically uses your active browser session, cookies, mTLS client certificates, or local files) or ahead of time with the **`soundforge-analyze` CLI**. Audio files are not transcoded or changed.
 
-### Option 1: Zero-fuss in-browser preprocessing (`<compact-audio-preprocessor>`)
+### Option 1: Standalone static preprocessor page (`examples/preprocess.html`)
+
+Open `preprocess.html` in your browser. Load `tracks.json` or pass `?catalog=<url>` to fetch automatically. Every track includes a live `<audio>` preview element. Click **Analyze catalog**, resolve any CORS-blocked files with the per-row **Attach file** button, and click **Download `tracks-enriched.json`**.
+
+### Option 2: Embeddable preprocessor component (`<compact-audio-preprocessor>`)
 
 The packaged demo (`index.html`) includes `<compact-audio-preprocessor>` right on the page, or you can import `@pahooper/soundforge/preprocessor` in any page where you can play your audio:
 
