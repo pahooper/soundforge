@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoundForge — player and catalog example</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px 20px; background: #edf1f4; color: #24323e; font: 16px/1.6 system-ui, sans-serif; }
+    header, footer { max-width: 960px; margin: 0 auto 24px; }
+    h1 { margin: 0; font-size: 30px; }
+    p { margin: 8px 0; }
+    main { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 24px; max-width: 1000px; margin: auto; }
+    compact-audio-browser { width: min(540px, 100%); }
+    compact-audio-player { width: min(360px, 100%); }
+    label { display: inline-flex; align-items: center; gap: 8px; margin: 8px 16px 8px 0; }
+    select { font: inherit; padding: 4px 8px; }
+    footer { margin-top: 24px; font-size: 14px; }
+    a { color: #076b83; }
+    #status { min-height: 26px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SoundForge</h1>
+    <p>A complete player and catalog, connected in one HTML page.</p>
+    <p>Choose Play beside a track. Build a queue for a playlist, or choose Layers, Set base, and + Layer to mix tracks.</p>
+    <label>Theme <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label>
+    <label>Catalog <select id="catalog"><option value="tracks-enriched.json">With preprocessed visualization</option><option value="tracks.json">Original audio only</option></select></label>
+    <p id="status" role="status">Loading example catalog…</p>
+  </header>
+  <main>
+    <compact-audio-browser id="library" theme="dark"></compact-audio-browser>
+    <compact-audio-player id="player" theme="dark"></compact-audio-player>
+  </main>
+  <footer>
+    <p>Two original, eight-second synthetic audio samples are included under the MIT license. Start with low speaker volume.</p>
+    <p>The enriched catalog adds duration and visualization data; audio files stay unchanged. Original audio only uses the static fallback graphic.</p>
+    <p><a href="./tracks.json">Input catalog</a> · <a href="./tracks-enriched.json">Enriched catalog</a> · <a href="./README.md">Example instructions</a></p>
+  </footer>
+  <script type="module">
+    import './lib/audio-player.js';
+    import './lib/audio-browser.js';
+    import {connectAudioBrowser} from './lib/connect.js';
+
+    await Promise.all([
+      customElements.whenDefined('compact-audio-player'),
+      customElements.whenDefined('compact-audio-browser')
+    ]);
+    const library = document.querySelector('#library');
+    const player = document.querySelector('#player');
+    const status = document.querySelector('#status');
+    const disconnect = connectAudioBrowser(library, player);
+    window.addEventListener('pagehide', disconnect, {once:true});
+
+    document.querySelector('#theme').addEventListener('change', event => {
+      library.theme = event.target.value;
+      player.theme = event.target.value;
+    });
+    async function loadCatalog(file) {
+      try {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error('Catalog returned HTTP '+response.status);
+        const tracks = await response.json();
+        library.catalog = tracks;
+        status.textContent = 'Ready: '+tracks.length+' tracks. Select Play beside a track; press Play in the player if your browser blocks autoplay.';
+      } catch (error) {
+        status.textContent = 'Could not load catalog: '+error.message+'. Run the local server instead of opening this file directly.';
+      }
+    }
+    document.querySelector('#catalog').addEventListener('change', event => loadCatalog(event.target.value));
+    player.addEventListener('playbackerror', () => {
+      status.textContent = 'Audio could not play. Check the audio URL, supported codec, and browser Network panel.';
+    });
+    await loadCatalog('tracks-enriched.json');
+  </script>
+</body>
+</html>

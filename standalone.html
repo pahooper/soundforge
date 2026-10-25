@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Standalone audio web component</title>
+<style>body{margin:0;padding:48px;background:#e7ebef;font-family:Arial,sans-serif}main{display:flex;gap:32px;justify-content:center}h1,p{text-align:center}</style>
+<h1>Standalone audio player</h1><p>Built Svelte custom elements on a plain HTML page. Click Play to hear the short test tone.</p>
+<main><compact-audio-player id="dark" theme="dark"></compact-audio-player><compact-audio-player id="light" theme="light"></compact-audio-player></main>
+<script type="module">
+import './dist/audio-player.js';
+await customElements.whenDefined('compact-audio-player');
+const tracks=await(await fetch('./public/tracks.json')).json();
+tracks.forEach(track=>track.url='./public/fixture.mp3');
+for(const id of ['dark','light']) document.getElementById(id).playlist=tracks;
+</script></html>

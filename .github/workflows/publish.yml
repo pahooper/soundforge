@@ -1,0 +1,40 @@
+name: Publish to npm
+on:
+  release:
+    types: [published]
+permissions:
+  contents: read
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - run: npm install --global npm@11.19.1
+      - name: Check release tag matches package
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: node tools/publish-release.mjs --check
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run test:package
+      - run: npm run test:docs
+      - name: Publish reviewed package with trusted publishing
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: node tools/publish-release.mjs

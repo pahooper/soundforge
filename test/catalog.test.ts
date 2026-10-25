@@ -1,0 +1,6 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {categories,filterTracks,reorder} from '../src/catalog.ts';
+const tracks=[{title:'Midnight',url:'a',category:'Lo-fi'},{title:'Piano',url:'b',category:'Classical'},{title:'MIDNIGHT two',url:'c',category:'Lo-fi'},{title:'Other',url:'d'}];
+test('categories are distinct, sorted and include uncategorized',()=>assert.deepEqual(categories(tracks),['Classical','Lo-fi','Uncategorized']));
+test('search is case insensitive and scoped to category',()=>{assert.deepEqual(filterTracks(tracks,'Lo-fi',' midnight '),[tracks[0],tracks[2]]);assert.deepEqual(filterTracks(tracks,'Classical','midnight'),[]);assert.equal(filterTracks(tracks,'Lo-fi','').length,2);assert.equal(filterTracks(tracks,'','').length,4)});
+test('reordering preserves duplicate queue entries without mutating input',()=>{const original=[tracks[0],tracks[0],tracks[1]];const result=reorder(original,2,0);assert.deepEqual(result,[tracks[1],tracks[0],tracks[0]]);assert.equal(original[0],tracks[0]);assert.equal(result.length,3)});
+test('invalid reorder requests do nothing',()=>{assert.equal(reorder(tracks,-1,0),tracks);assert.equal(reorder(tracks,0,4),tracks);assert.equal(reorder(tracks,.5,0),tracks)});

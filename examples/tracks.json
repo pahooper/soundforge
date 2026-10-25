@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Pulse",
+    "url": "./audio/pulse.wav",
+    "category": "Synthetic"
+  },
+  {
+    "title": "Chime",
+    "url": "./audio/chime.wav",
+    "category": "Synthetic"
+  }
+]

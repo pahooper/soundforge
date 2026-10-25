@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Audio library and player</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#e7ebef;color:#27323b;font-family:Arial,Helvetica,sans-serif;padding:48px 32px}header{max-width:940px;margin:0 auto 28px;display:flex;justify-content:space-between;align-items:center;gap:20px}h1{font-size:28px;margin:0 0 9px}header p{font-size:13px;margin:0;color:#62717e;line-height:1.6}main{display:flex;gap:28px;justify-content:center;align-items:flex-start;flex-wrap:wrap}select{background:white;border:1px solid #c8d2da;border-radius:7px;padding:8px;color:#27323b}footer{text-align:center;color:#62717e;font-size:11px;margin:26px auto;line-height:1.7}a{color:#008fa5}#play-note{font-size:12px;color:#62717e;text-align:center;margin:20px}label{font-size:12px;display:flex;gap:8px;align-items:center}</style>
+<header><div><h1>Your listening space</h1><p>Browse by category, find a track, or build your own queue.</p></div><label>Theme<select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select></label></header>
+<main><compact-audio-browser id="browser" theme="dark"></compact-audio-browser><compact-audio-player id="player" theme="dark"></compact-audio-player></main>
+<p id="play-note">Choose Play beside a track, or add tracks with + and select one in your queue.</p>
+<footer>Music: Scott Joplin — Maple Leaf Rag · 53-second excerpt.<br>Recording: Foil Fencer2 (2007), public domain · <a href="https://commons.wikimedia.org/wiki/File:Maple_Leaf_Rag.ogg">Recording source</a><br>“Pulse test tone” is a synthetic test fixture.</footer>
+<script type="module">
+import './dist/audio-player.js';import './dist/audio-browser.js';import {connectAudioBrowser} from './examples/connect.js';
+await Promise.all([customElements.whenDefined('compact-audio-player'),customElements.whenDefined('compact-audio-browser')]);
+const browser=document.querySelector('#browser'),player=document.querySelector('#player');
+connectAudioBrowser(browser,player,queueMode=>document.querySelector('#play-note').textContent=queueMode?'Playing your queue in order.':'Choose a track, build a queue, or switch to Layers to blend up to four tracks.');
+browser.addEventListener('modechange',e=>{document.querySelector('#play-note').textContent=e.detail.mode==='layers'?'Use Set base and + Layer beside a track. Choose or replace a specific slot below. Press Play to start the mix.':'Choose a track or build your queue.'});
+document.querySelector('#theme').addEventListener('change',e=>{player.theme=e.target.value;browser.theme=e.target.value});
+browser.catalog=await(await fetch('./public/catalog.json')).json();
+</script></html>
